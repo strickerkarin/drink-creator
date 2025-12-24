@@ -1,18 +1,25 @@
 'use client';
 
 import { useState } from 'react';
-import { Sparkles, Wine, RotateCcw, PartyPopper } from 'lucide-react';
+import { Sparkles, Wine, RotateCcw, PartyPopper, ChefHat, ScrollText } from 'lucide-react';
 
 // --- CONFIGURACIÓN DE DATOS ---
 
-// 1. Definimos los 5 Perfiles (Vibras)
+// 1. Definimos los 5 Perfiles (Vibras) con RECETAS COMPLETAS
 const DRINK_PROFILES = {
   tropical: {
     id: 'tropical',
     name: 'Reina de la Pista',
     drinkName: 'Piña Colada',
     description: 'Sos el alma de la fiesta. Dulce, colorida y peligrosa si te toman rápido.',
-    ingredients: 'Ron blanco, crema de coco, jugo de ananá y mucha actitud.',
+    ingredients: [
+      '60ml Ron Blanco',
+      '90ml Jugo de Ananá',
+      '30ml Crema de Coco',
+      'Hielo picado',
+      'Decoración: Triangulito de ananá'
+    ],
+    preparation: 'Batir todos los ingredientes con hielo en licuadora o coctelera hasta que quede cremoso. Servir en copa alta.',
     imagePrompt: 'Pina Colada cocktail tropical beach party colorful 4k',
     color: 'from-pink-500 to-orange-400'
   },
@@ -21,7 +28,14 @@ const DRINK_PROFILES = {
     name: 'La Jefa',
     drinkName: 'Negroni',
     description: 'Personalidad fuerte y directa. No necesitás adornos, vas al punto.',
-    ingredients: 'Gin, Campari, Vermouth Rosso y una piel de naranja.',
+    ingredients: [
+      '30ml Gin London Dry',
+      '30ml Campari',
+      '30ml Vermouth Rosso',
+      'Hielo en cubos grandes',
+      'Decoración: Piel de naranja'
+    ],
+    preparation: 'Colocar hielo en un vaso corto. Verter las tres bebidas y remover suavemente con una cuchara para enfriar.',
     imagePrompt: 'Negroni cocktail dark moody elegant lighting 4k',
     color: 'from-red-600 to-orange-700'
   },
@@ -30,7 +44,14 @@ const DRINK_PROFILES = {
     name: 'La Lady',
     drinkName: 'Espresso Martini',
     description: 'Clase, estilo y responsabilidad. No tomás cualquier cosa, tomás lo que te queda bien.',
-    ingredients: 'Vodka, licor de café, espresso recién hecho.',
+    ingredients: [
+      '45ml Vodka',
+      '30ml Licor de Café (Kahlúa)',
+      '1 Espresso recién hecho (caliente)',
+      'Hielo abundante',
+      'Decoración: 3 granos de café'
+    ],
+    preparation: 'Batir muy fuerte en coctelera con mucho hielo (para generar espuma). Colar doble sobre copa martini fría.',
     imagePrompt: 'Espresso Martini cocktail elegant luxury bar 4k',
     color: 'from-slate-700 to-slate-900'
   },
@@ -39,7 +60,14 @@ const DRINK_PROFILES = {
     name: 'La Zen',
     drinkName: 'Gin Tonic Pepino',
     description: 'Frescura y transparencia. Lo tuyo es disfrutar sin dramas ni complicaciones.',
-    ingredients: 'Gin London Dry, tónica premium, rodajas de pepino y pimienta.',
+    ingredients: [
+      '60ml Gin',
+      '200ml Agua Tónica Premium',
+      'Láminas finas de pepino',
+      'Pimienta negra en grano',
+      'Mucho hielo'
+    ],
+    preparation: 'Llenar un copón con hielo. Agregar el gin y las láminas de pepino. Completar con tónica suavemente para no romper la burbuja.',
     imagePrompt: 'Gin Tonic cucumber fresh bright sunlight garden 4k',
     color: 'from-emerald-400 to-teal-600'
   },
@@ -48,7 +76,14 @@ const DRINK_PROFILES = {
     name: 'La Cozy',
     drinkName: 'Baileys Frozen',
     description: 'Buscás calidez y dulzura. Tu trago ideal es básicamente un abrazo en un vaso.',
-    ingredients: 'Baileys, helado de crema, hielo y chocolate rallado.',
+    ingredients: [
+      '60ml Baileys (Crema irlandesa)',
+      '2 bochas de helado de crema americana',
+      'Hielo',
+      'Sirope de chocolate',
+      'Decoración: Chocolate rallado'
+    ],
+    preparation: 'Licuar el Baileys con el helado y un poco de hielo hasta punto frozen. Servir en vaso decorado con hilos de chocolate.',
     imagePrompt: 'Baileys cocktail creamy chocolate cozy winter aesthetic 4k',
     color: 'from-amber-200 to-orange-200'
   }
@@ -94,9 +129,9 @@ export default function DrinkCreator() {
   const [userName, setUserName] = useState('');
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [result, setResult] = useState<any>(null);
+  const [customTitle, setCustomTitle] = useState('');
 
   // Mezclar las cualidades al azar para que no salgan ordenadas por grupo
-  // (Esto se ejecuta una sola vez al cargar, o podes usar un useEffect si preferis)
   const [shuffledQualities] = useState(() => [...QUALITIES].sort(() => Math.random() - 0.5));
 
   const toggleQuality = (label: string) => {
@@ -119,9 +154,8 @@ export default function DrinkCreator() {
     });
 
     // Encontramos el ganador
-    let winner = 'tropical'; // Default
+    let winner = 'tropical'; 
     let maxVotes = 0;
-    
     Object.entries(votes).forEach(([vibe, count]) => {
       if (count > maxVotes) {
         maxVotes = count;
@@ -129,8 +163,19 @@ export default function DrinkCreator() {
       }
     });
 
-    // @ts-ignore
-    setResult(DRINK_PROFILES[winner]);
+    // --- LÓGICA DE PERSONALIZACIÓN DEL NOMBRE (MEJORADA) ---
+    const profile = DRINK_PROFILES[winner as keyof typeof DRINK_PROFILES];
+    
+    // Elegimos una cualidad al azar
+    const randomQuality = selectedQualities[Math.floor(Math.random() * selectedQualities.length)];
+    
+    // NUEVO FORMATO: "Nombre del Trago: Edición [Cualidad] de [Nombre]"
+    // Ej: "Baileys Frozen: Edición Miedosa de Karin"
+    // Esto evita el problema de "El Baileys Miedosa" (que suena mal por el género).
+    const title = `${profile.drinkName}: Edición ${randomQuality} de ${userName}`;
+
+    setCustomTitle(title);
+    setResult(profile);
     setStep(3);
   };
 
@@ -138,6 +183,7 @@ export default function DrinkCreator() {
     setUserName('');
     setSelectedQualities([]);
     setResult(null);
+    setCustomTitle('');
     setStep(1);
   };
 
@@ -172,9 +218,9 @@ export default function DrinkCreator() {
             <button
               onClick={() => userName.trim() && setStep(2)}
               disabled={!userName.trim()}
-              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]"
+              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl shadow-lg transition-all transform hover:scale-[1.02] cursor-pointer"
             >
-              COMENCAR EXPERIENCIA
+              COMENZAR EXPERIENCIA
             </button>
           </div>
         </section>
@@ -182,7 +228,7 @@ export default function DrinkCreator() {
 
       {/* PANTALLA 2: EL QUIZ */}
       {step === 2 && (
-        <section className="min-h-screen py-12 px-4 max-w-4xl mx-auto">
+        <section className="min-h-screen py-12 px-4 max-w-4xl mx-auto flex flex-col justify-center">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold mb-2">Hola, <span className="text-pink-400">{userName}</span></h2>
             <p className="text-gray-400">Elegí las 3 palabras que mejor te definen:</p>
@@ -198,11 +244,11 @@ export default function DrinkCreator() {
                 onClick={() => toggleQuality(item.label)}
                 disabled={!selectedQualities.includes(item.label) && selectedQualities.length >= 3}
                 className={`
-                  p-4 rounded-xl font-medium transition-all duration-200 border-2
+                  p-4 rounded-xl font-medium transition-all duration-200 border-2 cursor-pointer
                   ${selectedQualities.includes(item.label) 
                     ? 'bg-pink-600 border-pink-500 text-white shadow-lg shadow-pink-900/50 scale-105' 
-                    : 'bg-gray-900 border-gray-800 text-gray-400 hover:border-gray-600 hover:text-white'}
-                  disabled:opacity-30 disabled:cursor-not-allowed
+                    : 'bg-gray-900 border-gray-800 text-gray-400 hover:border-gray-600 hover:text-white hover:scale-105'}
+                  disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100
                 `}
               >
                 {item.label}
@@ -214,7 +260,7 @@ export default function DrinkCreator() {
             <button
               onClick={calculateResult}
               disabled={selectedQualities.length !== 3}
-              className="flex items-center gap-2 bg-white text-black font-bold py-4 px-12 rounded-full text-lg shadow-xl shadow-white/10 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="flex items-center gap-2 bg-white text-black font-bold py-4 px-12 rounded-full text-lg shadow-xl shadow-white/10 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer transform hover:scale-105"
             >
               <Sparkles size={20} />
               PREPARAR MI TRAGO
@@ -226,44 +272,58 @@ export default function DrinkCreator() {
       {/* PANTALLA 3: EL RESULTADO */}
       {step === 3 && result && (
         <section className={`min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br ${result.color}`}>
-          <div className="max-w-md w-full bg-black/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/10 animate-fade-in">
+          <div className="max-w-md w-full bg-black/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/10 animate-fade-in my-8">
             
             {/* Imagen Generada por IA */}
-            <div className="relative h-80 w-full overflow-hidden group">
+            <div className="relative h-72 w-full overflow-hidden group">
               <img 
                 src={`https://image.pollinations.ai/prompt/${encodeURIComponent(result.imagePrompt)}?nologo=true`} 
                 alt={result.drinkName} 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-              <div className="absolute bottom-4 left-4">
-                <span className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white border border-white/20">
-                  Match Personalizado
-                </span>
+              <div className="absolute bottom-4 left-4 right-4">
+                 <h2 className="text-2xl font-black text-white mb-1 leading-tight drop-shadow-lg">
+                    {customTitle}
+                 </h2>
+                 <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider text-white border border-white/20">
+                    Vibra: {result.name}
+                 </span>
               </div>
             </div>
 
-            <div className="p-8 text-center">
-              <h3 className="text-gray-400 text-sm uppercase tracking-widest mb-2">Tu personalidad sabe a...</h3>
-              <h2 className="text-4xl font-black text-white mb-1 leading-none">{result.drinkName}</h2>
-              <div className="text-pink-500 font-bold mb-6 text-sm flex justify-center gap-1">
-                 Perfil: {result.name}
-              </div>
-
-              <p className="text-gray-300 italic mb-8 leading-relaxed">
+            <div className="p-8">
+              <p className="text-gray-300 italic mb-6 leading-relaxed text-center border-b border-white/10 pb-6">
                 "{result.description}"
               </p>
 
-              <div className="bg-white/5 rounded-xl p-4 text-left border border-white/10 mb-8">
-                <h4 className="flex items-center gap-2 font-bold text-white mb-2 text-sm uppercase">
-                  <PartyPopper size={16} className="text-yellow-500"/> Receta Mágica:
+              {/* Lista de Ingredientes */}
+              <div className="mb-6">
+                <h4 className="flex items-center gap-2 font-bold text-pink-400 mb-3 text-sm uppercase tracking-wider">
+                  <ScrollText size={16} /> Lo que necesitás:
                 </h4>
-                <p className="text-gray-400 text-sm">{result.ingredients}</p>
+                <ul className="text-sm text-gray-300 space-y-2 pl-2">
+                  {result.ingredients.map((ing: string, i: number) => (
+                    <li key={i} className="flex items-start gap-2">
+                       <span className="text-pink-500">•</span> {ing}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Preparación */}
+               <div className="bg-white/5 rounded-xl p-4 text-left border border-white/10 mb-8">
+                <h4 className="flex items-center gap-2 font-bold text-yellow-400 mb-2 text-sm uppercase">
+                  <ChefHat size={16} /> Cómo prepararlo:
+                </h4>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                   {result.preparation}
+                </p>
               </div>
 
               <button 
                 onClick={resetApp}
-                className="flex items-center justify-center gap-2 w-full border border-white/20 hover:bg-white/10 text-white font-medium py-3 rounded-lg transition-all"
+                className="flex items-center justify-center gap-2 w-full border border-white/20 hover:bg-white/10 text-white font-medium py-3 rounded-lg transition-all cursor-pointer"
               >
                 <RotateCcw size={18} />
                 Probar con otra amiga
