@@ -5,88 +5,118 @@ import { Sparkles, Wine, RotateCcw, PartyPopper, ChefHat, ScrollText } from 'luc
 
 // --- CONFIGURACIÓN DE DATOS ---
 
-// 1. Definimos los 5 Perfiles (Vibras) con RECETAS COMPLETAS
+// 1. Definimos los Perfiles con MÚLTIPLES OPCIONES de tragos
 const DRINK_PROFILES = {
-  tropical: {
-    id: 'tropical',
-    name: 'Reina de la Pista',
-    drinkName: 'Piña Colada',
-    description: 'Sos el alma de la fiesta. Dulce, colorida y peligrosa si te toman rápido.',
-    ingredients: [
-      '60ml Ron Blanco',
-      '90ml Jugo de Ananá',
-      '30ml Crema de Coco',
-      'Hielo picado',
-      'Decoración: Triangulito de ananá'
-    ],
-    preparation: 'Batir todos los ingredientes con hielo en licuadora o coctelera hasta que quede cremoso. Servir en copa alta.',
-    imagePrompt: 'Pina Colada cocktail tropical beach party colorful 4k',
-    color: 'from-pink-500 to-orange-400'
-  },
-  intensa: {
-    id: 'intensa',
-    name: 'La Jefa',
-    drinkName: 'Negroni',
-    description: 'Personalidad fuerte y directa. No necesitás adornos, vas al punto.',
-    ingredients: [
-      '30ml Gin London Dry',
-      '30ml Campari',
-      '30ml Vermouth Rosso',
-      'Hielo en cubos grandes',
-      'Decoración: Piel de naranja'
-    ],
-    preparation: 'Colocar hielo en un vaso corto. Verter las tres bebidas y remover suavemente con una cuchara para enfriar.',
-    imagePrompt: 'Negroni cocktail dark moody elegant lighting 4k',
-    color: 'from-red-600 to-orange-700'
-  },
-  sofisticada: {
-    id: 'sofisticada',
-    name: 'La Lady',
-    drinkName: 'Espresso Martini',
-    description: 'Clase, estilo y responsabilidad. No tomás cualquier cosa, tomás lo que te queda bien.',
-    ingredients: [
-      '45ml Vodka',
-      '30ml Licor de Café (Kahlúa)',
-      '1 Espresso recién hecho (caliente)',
-      'Hielo abundante',
-      'Decoración: 3 granos de café'
-    ],
-    preparation: 'Batir muy fuerte en coctelera con mucho hielo (para generar espuma). Colar doble sobre copa martini fría.',
-    imagePrompt: 'Espresso Martini cocktail elegant luxury bar 4k',
-    color: 'from-slate-700 to-slate-900'
-  },
-  zen: {
-    id: 'zen',
-    name: 'La Zen',
-    drinkName: 'Gin Tonic Pepino',
-    description: 'Frescura y transparencia. Lo tuyo es disfrutar sin dramas ni complicaciones.',
-    ingredients: [
-      '60ml Gin',
-      '200ml Agua Tónica Premium',
-      'Láminas finas de pepino',
-      'Pimienta negra en grano',
-      'Mucho hielo'
-    ],
-    preparation: 'Llenar un copón con hielo. Agregar el gin y las láminas de pepino. Completar con tónica suavemente para no romper la burbuja.',
-    imagePrompt: 'Gin Tonic cucumber fresh bright sunlight garden 4k',
-    color: 'from-emerald-400 to-teal-600'
-  },
-  cozy: {
-    id: 'cozy',
-    name: 'La Cozy',
-    drinkName: 'Baileys Frozen',
-    description: 'Buscás calidez y dulzura. Tu trago ideal es básicamente un abrazo en un vaso.',
-    ingredients: [
-      '60ml Baileys (Crema irlandesa)',
-      '2 bochas de helado de crema americana',
-      'Hielo',
-      'Sirope de chocolate',
-      'Decoración: Chocolate rallado'
-    ],
-    preparation: 'Licuar el Baileys con el helado y un poco de hielo hasta punto frozen. Servir en vaso decorado con hilos de chocolate.',
-    imagePrompt: 'Baileys cocktail creamy chocolate cozy winter aesthetic 4k',
-    color: 'from-amber-200 to-orange-200'
-  }
+  tropical: [
+    {
+      id: 'tropical_1',
+      name: 'Reina de la Pista',
+      drinkName: 'Piña Colada',
+      description: 'Sos el alma de la fiesta. Dulce, colorida y peligrosa si te toman rápido.',
+      ingredients: ['60ml Ron Blanco', '90ml Jugo de Ananá', '30ml Crema de Coco', 'Hielo picado', 'Decoración: Triangulito de ananá'],
+      preparation: 'Batir todos los ingredientes con hielo en licuadora o coctelera hasta que quede cremoso. Servir en copa alta.',
+      imagePrompt: 'Pina Colada cocktail tropical beach party colorful 4k',
+      color: 'from-pink-500 to-orange-400'
+    },
+    {
+      id: 'tropical_2',
+      name: 'Reina de la Pista',
+      drinkName: 'Daiquiri de Frutilla',
+      description: 'Vibrante, dulce y fresca. Sabés cómo ponerle sabor a la vida.',
+      ingredients: ['50ml Ron Blanco', '1 taza de frutillas congeladas', 'Jugo de media lima', '2 cdas de azúcar', 'Hielo'],
+      preparation: 'Licuar todos los ingredientes hasta obtener una textura frozen (granizada). Servir en copa margarita.',
+      imagePrompt: 'Strawberry Daiquiri frozen cocktail red tropical festive 4k',
+      color: 'from-pink-600 to-rose-400'
+    }
+  ],
+  intensa: [
+    {
+      id: 'intensa_1',
+      name: 'La Jefa',
+      drinkName: 'Negroni',
+      description: 'Personalidad fuerte y directa. No necesitás adornos, vas al punto.',
+      ingredients: ['30ml Gin London Dry', '30ml Campari', '30ml Vermouth Rosso', 'Hielo en cubos grandes', 'Decoración: Piel de naranja'],
+      preparation: 'Colocar hielo en un vaso corto. Verter las tres bebidas y remover suavemente con una cuchara para enfriar.',
+      imagePrompt: 'Negroni cocktail dark moody elegant lighting 4k',
+      color: 'from-red-600 to-orange-700'
+    },
+    {
+      id: 'intensa_2',
+      name: 'La Jefa',
+      drinkName: 'Old Fashioned',
+      description: 'Clásico, atemporal y con carácter. No seguís modas, vos las creás.',
+      ingredients: ['60ml Whisky o Bourbon', '1 terrón de azúcar', '3 gotas de amargo (Angostura)', 'Piel de naranja', 'Hielo roca'],
+      preparation: 'En un vaso corto, disolver el azúcar con el amargo y un chorrito de agua/soda. Agregar el hielo y el whisky. Remover despacio.',
+      imagePrompt: 'Old Fashioned cocktail whiskey glass dark wood moody 4k',
+      color: 'from-amber-700 to-orange-900'
+    }
+  ],
+  sofisticada: [
+    {
+      id: 'sofisticada_1',
+      name: 'La Lady',
+      drinkName: 'Espresso Martini',
+      description: 'Clase, estilo y energía. No tomás cualquier cosa, tomás lo que te despierta.',
+      ingredients: ['45ml Vodka', '30ml Licor de Café', '1 Espresso recién hecho', 'Hielo abundante', 'Decoración: 3 granos de café'],
+      preparation: 'Batir muy fuerte en coctelera con mucho hielo (para generar espuma). Colar doble sobre copa martini fría.',
+      imagePrompt: 'Espresso Martini cocktail elegant luxury bar 4k',
+      color: 'from-slate-700 to-slate-900'
+    },
+    {
+      id: 'sofisticada_2',
+      name: 'La Lady',
+      drinkName: 'Cosmopolitan',
+      description: 'Glamour urbano. Sos la protagonista de tu propia serie y merecés un trago icónico.',
+      ingredients: ['45ml Vodka Citron', '15ml Cointreau', '30ml Jugo de arándanos', 'Jugo de lima', 'Piel de limón'],
+      preparation: 'Batir enérgicamente en coctelera con hielo. Servir en copa martini helada. Perfumar con la piel de limón.',
+      imagePrompt: 'Cosmopolitan cocktail pink martini glass city night luxury 4k',
+      color: 'from-fuchsia-700 to-purple-900'
+    }
+  ],
+  zen: [
+    {
+      id: 'zen_1',
+      name: 'La Zen',
+      drinkName: 'Gin Tonic Pepino',
+      description: 'Frescura y transparencia. Lo tuyo es disfrutar sin dramas ni complicaciones.',
+      ingredients: ['60ml Gin', '200ml Agua Tónica Premium', 'Láminas de pepino', 'Pimienta negra', 'Mucho hielo'],
+      preparation: 'Llenar un copón con hielo. Agregar el gin y las láminas de pepino. Completar con tónica suavemente.',
+      imagePrompt: 'Gin Tonic cucumber fresh bright sunlight garden 4k',
+      color: 'from-emerald-400 to-teal-600'
+    },
+    {
+      id: 'zen_2',
+      name: 'La Zen',
+      drinkName: 'Mojito',
+      description: 'Natural y refrescante. Tenés esa capacidad de "menta" para limpiar las malas vibras.',
+      ingredients: ['50ml Ron Blanco', 'Media lima en trozos', '2 cdtas azúcar', 'Rama de menta fresca', 'Soda y hielo picado'],
+      preparation: 'Machacar suavemente la menta con azúcar y lima en el vaso. Llenar con hielo, agregar ron y completar con soda.',
+      imagePrompt: 'Mojito cocktail fresh mint lime sunlight bright 4k',
+      color: 'from-lime-400 to-green-600'
+    }
+  ],
+  cozy: [
+    {
+      id: 'cozy_1',
+      name: 'La Cozy',
+      drinkName: 'Baileys Frozen',
+      description: 'Buscás calidez y dulzura. Tu trago ideal es básicamente un abrazo en un vaso.',
+      ingredients: ['60ml Baileys', '2 bochas helado crema', 'Hielo', 'Sirope chocolate', 'Chocolate rallado'],
+      preparation: 'Licuar el Baileys con el helado y un poco de hielo hasta punto frozen. Servir en vaso decorado con chocolate.',
+      imagePrompt: 'Baileys cocktail creamy chocolate cozy winter aesthetic 4k',
+      color: 'from-amber-200 to-orange-200'
+    },
+    {
+      id: 'cozy_2',
+      name: 'La Cozy',
+      drinkName: 'White Russian',
+      description: 'Suave, cremoso y reconfortante. Te tomás la vida con calma y mucho estilo.',
+      ingredients: ['50ml Vodka', '25ml Licor de Café', '30ml Crema de leche (nata)', 'Hielo'],
+      preparation: 'Vaso corto con hielo. Poner el vodka y licor de café. Verter la crema despacio arriba para que quede el efecto bicolor.',
+      imagePrompt: 'White Russian cocktail creamy glass milk cozy lighting 4k',
+      color: 'from-stone-300 to-stone-500'
+    }
+  ]
 };
 
 // 2. Mapeamos tus 20 cualidades a los perfiles
@@ -145,7 +175,7 @@ export default function DrinkCreator() {
   };
 
   const calculateResult = () => {
-    // Contamos votos para cada perfil
+    // 1. Contamos votos para cada perfil
     const votes: Record<string, number> = { tropical: 0, intensa: 0, sofisticada: 0, zen: 0, cozy: 0 };
     
     selectedQualities.forEach(qLabel => {
@@ -153,29 +183,30 @@ export default function DrinkCreator() {
       if (quality) votes[quality.vibe]++;
     });
 
-    // Encontramos el ganador
-    let winner = 'tropical'; 
+    // 2. Encontramos la CATEGORÍA ganadora (Ej: 'tropical')
+    let winningVibe = 'tropical'; 
     let maxVotes = 0;
     Object.entries(votes).forEach(([vibe, count]) => {
       if (count > maxVotes) {
         maxVotes = count;
-        winner = vibe;
+        winningVibe = vibe;
       }
     });
 
-    // --- LÓGICA DE PERSONALIZACIÓN DEL NOMBRE (MEJORADA) ---
-    const profile = DRINK_PROFILES[winner as keyof typeof DRINK_PROFILES];
+    // 3. SELECCIÓN ALEATORIA DE TRAGO
+    // Obtenemos la lista de tragos de esa categoría
+    const possibleDrinks = DRINK_PROFILES[winningVibe as keyof typeof DRINK_PROFILES];
     
-    // Elegimos una cualidad al azar
+    // Elegimos uno al azar de la lista (Índice random)
+    const randomDrinkIndex = Math.floor(Math.random() * possibleDrinks.length);
+    const selectedProfile = possibleDrinks[randomDrinkIndex];
+
+    // 4. Personalización del Título
     const randomQuality = selectedQualities[Math.floor(Math.random() * selectedQualities.length)];
-    
-    // NUEVO FORMATO: "Nombre del Trago: Edición [Cualidad] de [Nombre]"
-    // Ej: "Baileys Frozen: Edición Miedosa de Karin"
-    // Esto evita el problema de "El Baileys Miedosa" (que suena mal por el género).
-    const title = `${profile.drinkName}: Edición ${randomQuality} de ${userName}`;
+    const title = `${selectedProfile.drinkName}: Edición ${randomQuality} de ${userName}`;
 
     setCustomTitle(title);
-    setResult(profile);
+    setResult(selectedProfile);
     setStep(3);
   };
 
